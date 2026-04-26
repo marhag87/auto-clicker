@@ -36,7 +36,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                     // The thread lives ONLY as long as the flag is true
                     while thread_flag.load(Ordering::SeqCst) {
                         let _ = enigo.button(Button::Left, Direction::Click);
-                        thread::sleep(Duration::from_millis(1));
+                        thread::sleep(Duration::from_millis(18));
                     }
                     println!("Clicker: OFF");
                 });
