@@ -11,12 +11,21 @@ use enigo::Enigo;
 use enigo::Mouse;
 use enigo::Settings;
 use std::error::Error;
+use std::io;
+use std::io::Write;
 use std::sync::Arc;
 use std::sync::atomic::AtomicBool;
 use std::sync::atomic::Ordering;
 use std::thread;
 use std::time::Duration;
 use std::time::Instant;
+
+macro_rules! reprint {
+    ($($arg:tt)*) => {
+        print!("\r\x1B[2K{}", format_args!($($arg)*));
+        io::stdout().flush().unwrap();
+    };
+}
 
 fn main() -> Result<(), Box<dyn Error>> {
     let opts = Opts::parse();
@@ -49,7 +58,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 fn click(is_clicking: Arc<AtomicBool>, target_cps: u32) {
     let was_clicking = is_clicking.fetch_xor(true, Ordering::SeqCst);
     if !was_clicking {
-        println!("Clicker: ON");
+        reprint!("Clicker: ON");
         let thread_flag = Arc::clone(&is_clicking);
         thread::spawn(move || {
             let mut enigo = Enigo::new(&Settings::default()).expect("Enigo init failed");
@@ -62,7 +71,7 @@ fn click(is_clicking: Arc<AtomicBool>, target_cps: u32) {
                     spin_sleep::sleep(interval - elapsed);
                 }
             }
-            println!("Clicker: OFF");
+            reprint!("\rClicker: OFF");
         });
     }
 }
