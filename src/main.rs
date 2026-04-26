@@ -22,7 +22,7 @@ use std::time::Instant;
 
 macro_rules! reprint {
     ($($arg:tt)*) => {
-        print!("\r\x1B[2K{}", format_args!($($arg)*));
+        print!("\r{}", format_args!($($arg)*));
         io::stdout().flush().unwrap();
     };
 }
@@ -58,7 +58,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 fn click(is_clicking: Arc<AtomicBool>, target_cps: u32) {
     let was_clicking = is_clicking.fetch_xor(true, Ordering::SeqCst);
     if !was_clicking {
-        reprint!("Clicker: ON");
+        reprint!("Clicker: ON ");
         let thread_flag = Arc::clone(&is_clicking);
         thread::spawn(move || {
             let mut enigo = Enigo::new(&Settings::default()).expect("Enigo init failed");
