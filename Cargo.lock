@@ -54,12 +54,13 @@ dependencies = [
 
 [[package]]
 name = "auto-clicker"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "clap",
  "clap_complete",
  "device_query",
  "enigo",
+ "spin_sleep",
 ]
 
 [[package]]
@@ -429,6 +430,15 @@ dependencies = [
  "errno",
  "libc",
  "linux-raw-sys",
+ "windows-sys",
+]
+
+[[package]]
+name = "spin_sleep"
+version = "1.3.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9c07347b7c0301b9adba4350bdcf09c039d0e7160922050db0439b3c6723c8ab"
+dependencies = [
  "windows-sys",
 ]
 

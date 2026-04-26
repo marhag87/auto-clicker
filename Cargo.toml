@@ -1,6 +1,6 @@
 [package]
 name = "auto-clicker"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2024"
 
 [dependencies]
@@ -8,3 +8,4 @@ clap = { version = "*", features = ["derive"] }
 clap_complete = "*"
 device_query = "*"
 enigo = "*"
+spin_sleep = "*"

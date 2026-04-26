@@ -13,4 +13,8 @@ pub struct Opts {
     /// Use keyboard key to toggle auto-click
     #[arg(short = 'k', long = "keyboard")]
     pub keyboard: Option<Keycode>,
+
+    /// Target clicks per second
+    #[arg(short = 'c', long = "cps", default_value_t = 50)]
+    pub clicks_per_second: u32,
 }
