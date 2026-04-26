@@ -4,5 +4,7 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-enigo = "*"
+clap = { version = "*", features = ["derive"] }
+clap_complete = "*"
 device_query = "*"
+enigo = "*"
