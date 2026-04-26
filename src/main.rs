@@ -20,25 +20,27 @@ fn main() -> Result<(), Box<dyn Error>> {
     println!("Auto-clicker ready!");
     println!("Press 'F8' to toggle on/off.");
 
-    thread::spawn(move || {
-        let mut enigo = Enigo::new(&Settings::default()).unwrap();
-        loop {
-            if is_clicking_clone.load(Ordering::Relaxed) {
-                let _ = enigo.button(Button::Left, Direction::Click);
-                thread::sleep(Duration::from_millis(1));
-            } else {
-                thread::sleep(Duration::from_millis(10));
-            }
-        }
-    });
-
     let device_events = DeviceEventsHandler::new(Duration::from_millis(10))
         .ok_or("Failed to start device listener")?;
-    let _guard = device_events.on_key_down(move |key| {
+    let _guard = device_events.on_key_up(move |key| {
         if *key == Keycode::F8 {
-            let current_state = is_clicking.load(Ordering::Relaxed);
-            is_clicking.store(!current_state, Ordering::Relaxed);
-            println!("Clicker Active: {}", !current_state);
+            let was_clicking = is_clicking_clone.fetch_xor(true, Ordering::SeqCst);
+            let now_clicking = !was_clicking;
+
+            if now_clicking {
+                println!("Clicker: ON");
+                let thread_flag = Arc::clone(&is_clicking_clone);
+                thread::spawn(move || {
+                    let mut enigo = Enigo::new(&Settings::default()).expect("Enigo init failed");
+
+                    // The thread lives ONLY as long as the flag is true
+                    while thread_flag.load(Ordering::SeqCst) {
+                        let _ = enigo.button(Button::Left, Direction::Click);
+                        thread::sleep(Duration::from_millis(1));
+                    }
+                    println!("Clicker: OFF");
+                });
+            }
         }
     });
     thread::park();
