@@ -1,8 +1,15 @@
-use device_query::{DeviceEvents, DeviceEventsHandler, DeviceQuery, DeviceState, Keycode};
-use enigo::{Button, Direction, Enigo, Mouse, Settings};
+use device_query::DeviceEvents;
+use device_query::DeviceEventsHandler;
+use device_query::Keycode;
+use enigo::Button;
+use enigo::Direction;
+use enigo::Enigo;
+use enigo::Mouse;
+use enigo::Settings;
 use std::error::Error;
 use std::sync::Arc;
-use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::atomic::AtomicBool;
+use std::sync::atomic::Ordering;
 use std::thread;
 use std::time::Duration;
 

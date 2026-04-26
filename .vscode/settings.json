@@ -1,0 +1,7 @@
+{
+    "rust-analyzer.rustfmt.extraArgs": [
+        "+nightly",
+        "--config",
+        "imports_granularity=Item"
+    ]
+}
